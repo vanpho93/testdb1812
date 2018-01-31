@@ -22,7 +22,8 @@ class User extends UserModel {
     static async signIn(email, password) {
         const user = await User.findOne({ email });
         if (!user) throw new Error('Cannot find user.');
-        const same = await compare(password, user.password);
+        const same = await compare(password, user.password)
+        .catch(() => { throw new Error('Invalid password.'); });
         if (!same) throw new Error('Invalid password.');
         return user;
     }
