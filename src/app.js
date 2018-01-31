@@ -1,11 +1,14 @@
 const express = require('express');
-
+const User = require('./models/user.model');
+// const parser = require('body-parser').urlencoded({ extended: false });
+const parser = require('body-parser').json();
 const app = express();
 
-app.get('/cong/:a/:b', (req, res) => {
-    const { a, b } = req.params;
-    if (isNaN(a) || isNaN(b)) return res.status(400).send('Type error.');
-    res.send(+a + +b + '');
+app.post('/signup', parser, (req, res) => {
+    const { email, password, phone, name } = req.body;
+    User.signUp(email, password, phone, name)
+    .then(user => res.send({ success: true, user }))
+    .catch(error => res.send({ success: false, message: error.message }));
 });
 
 module.exports = app;
