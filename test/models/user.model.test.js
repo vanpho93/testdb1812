@@ -2,7 +2,7 @@ const assert = require('assert');
 const { compare } = require('bcrypt');
 const User = require('../../src/models/user.model');
 
-xdescribe('Test user sign up', () => {
+describe('Test user sign up', () => {
     it('Can sign up with full info', async () => {
         await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
         const users = await User.find({ });
@@ -36,8 +36,11 @@ xdescribe('Test user sign up', () => {
 });
 
 describe('Test user sign in', () => {
-    it('Can sign in with email and password', async () => {
+    beforeEach('Sign up a user for test', async () => {
         await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
+    });
+
+    it('Can sign in with email and password', async () => {
         const user = await User.signIn('pho100@gmail.com', '123');
         assert.equal(user.phone, '012398219434');
         assert.equal(user.name, 'Pho');
@@ -45,7 +48,6 @@ describe('Test user sign in', () => {
     });
 
     it('Cannot sign in with wrong email', async () => {
-        await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
         try {
             await User.signIn('abcd@gmail.com', '123');
             throw new Error('Wrong');
@@ -55,7 +57,6 @@ describe('Test user sign in', () => {
     });
 
     it('Cannot sign in with wrong password', async () => {
-        await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
         try {
             await User.signIn('pho100@gmail.com', '321');
             throw new Error('Wrong');
@@ -65,7 +66,6 @@ describe('Test user sign in', () => {
     });
 
     it('Cannot sign in without password', async () => {
-        await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
         try {
             await User.signIn('pho100@gmail.com', undefined);
             throw new Error('Wrong');
