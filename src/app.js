@@ -6,7 +6,7 @@ const app = express();
 
 app.post('/signup', parser, (req, res) => {
     const { email, password, phone, name } = req.body;
-    User.signUp(email, password, phone, name)
+    User.signUp(email, password, name, phone)
     .then(user => res.send({ success: true, user }))
     .catch(error => res.send({ success: false, message: error.message }));
 });
