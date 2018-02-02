@@ -20,8 +20,9 @@ describe.only('Test POST /signin', () => {
     it('Cannot sign in with wrong email', async () => {
         const userInfo = { email: 'ax@gmail.com', password: '123' };
         const response = await request(app).post('/signin').send(userInfo);
-        assert.equal(response.status, 400);
+        assert.equal(response.status, 404);
         assert.equal(response.body.success, false);
+        assert.equal(response.body.code, 'CANNOT_FIND_USER');
     });
 
     it('Cannot sign in with wrong password', async () => {
@@ -41,7 +42,7 @@ describe.only('Test POST /signin', () => {
     it('Cannot sign in without email', async () => {
         const userInfo = { };
         const response = await request(app).post('/signin').send(userInfo);
-        assert.equal(response.status, 400);
+        assert.equal(response.status, 404);
         assert.equal(response.body.success, false);
     });
 });
