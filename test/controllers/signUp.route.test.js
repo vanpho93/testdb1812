@@ -5,7 +5,7 @@ const { compare } = require('bcrypt');
 const app = require('../../src/app');
 const User = require('../../src/models/user.model');
 
-describe.only('Test POST /signup', () => {
+describe('Test POST /signup', () => {
     it('Can sign up with full info', async () => {
         const userInfo = {
             email: 'vanpho01@gmail.com',
