@@ -11,4 +11,11 @@ app.post('/signup', parser, (req, res) => {
     .catch(error => res.send({ success: false, message: error.message }));
 });
 
+app.post('/signin', parser, (req, res) => {
+    const { email, password } = req.body;
+    User.signIn(email, password)
+    .then(user => res.send({ success: true, user }))
+    .catch(error => res.send({ success: false, message: error.message }));
+});
+
 module.exports = app;
