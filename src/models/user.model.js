@@ -17,7 +17,10 @@ class User extends UserModel {
     static async signUp(email, password, name, phone) {
         const encrypted = await hash(password, 8);
         const user = new UserModel({ name, email, password: encrypted, phone });
-        return user.save();
+        await user.save();
+        const userInfo = user.toObject();
+        delete userInfo.password;
+        return userInfo;
     }
     static async signIn(email, password) {
         const user = await User.findOne({ email });
@@ -25,7 +28,9 @@ class User extends UserModel {
         const same = await compare(password, user.password)
         .catch(() => { throw new Error('Invalid password.'); });
         if (!same) throw new Error('Invalid password.');
-        return user;
+        const userInfo = user.toObject();
+        delete userInfo.password;
+        return userInfo;
     }
 }
 
