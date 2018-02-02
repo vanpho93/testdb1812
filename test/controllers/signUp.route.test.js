@@ -30,11 +30,31 @@ describe.only('Test POST /signup', () => {
         assert.equal(same, true);
     });
 
-    xit('Cannot sign up without email', async () => {
-
+    it('Cannot sign up without email', async () => {
+        const userInfo = {
+            password: '123',
+            name: 'Pho',
+            phone: '01293818239'
+        };
+        const response = await request(app)
+        .post('/signup')
+        .send(userInfo);
+        assert.equal(response.status, 400);
+        assert.equal(response.body.success, false);
     });
 
-    xit('Cannot sign up with existed email', async () => {
-
+    it('Cannot sign up with existed email', async () => {
+        await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
+        const userInfo = {
+            email: 'pho100@gmail.com',
+            password: '123',
+            name: 'Pho',
+            phone: '01293818239'
+        };
+        const response = await request(app)
+        .post('/signup')
+        .send(userInfo);
+        assert.equal(response.status, 400);
+        assert.equal(response.body.success, false);
     });
 });
