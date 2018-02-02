@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { hash, compare } = require('bcrypt');
+const { sign } = require('../lib/jwt');
 
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
@@ -29,6 +30,8 @@ class User extends UserModel {
         .catch(() => { throw new Error('Invalid password.'); });
         if (!same) throw new Error('Invalid password.');
         const userInfo = user.toObject();
+        const token = await sign({ _id: user._id });
+        userInfo.token = token;
         delete userInfo.password;
         return userInfo;
     }
