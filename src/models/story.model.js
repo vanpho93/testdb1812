@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const User = require('./user.model');
+const MyError = require('../lib/MyError');
 const Schema = mongoose.Schema;
 
 const storySchema = new Schema({
@@ -10,10 +11,11 @@ const storySchema = new Schema({
 const StoryModel = mongoose.model('Story', storySchema);
 
 class Story extends StoryModel {
-    static createStory(idUser, content) {
+    static async createStory(idUser, content) {
         const story = new Story({ content, author: idUser });
-        const user = await User.findByIdAndUpdate(idUser, { $addToSet: { stories: story._id } });
-        if (!user) throw new Error('Cannot find user.');
+        const user = await User.findByIdAndUpdate(idUser, { $addToSet: { stories: story._id } })
+        .catch(error => { throw new Error('Cannot find user.'); });
+        if (!user) throw new MyError('Cannot find user.', 'CANNOT_FIND_USER', 404);
         return await story.save();
     }
 }

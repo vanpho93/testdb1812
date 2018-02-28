@@ -39,10 +39,18 @@ describe.only('Can create story for user', () => {
     });
 
     it('Can add new story with static method', async () => {
-
+        await Story.createStory(_id, 'abx');
+        const story = await Story.findOne({}).populate('author');
+        assert.equal(story.author.name, 'teo');
+        const user = await User.findById(_id).populate('stories');
+        assert.equal(user.stories[0].content, 'abx');
     });
 
     it('Cannot add new story with wrong idUser', async () => {
-
+        try {
+            await Story.createStory('5a96bb41ceba757ac658d02e', 'abx');
+        } catch (error) {
+            assert.equal(error.code, 'CANNOT_FIND_USER');
+        }
     });
 });
