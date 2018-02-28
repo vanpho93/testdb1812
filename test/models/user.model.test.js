@@ -20,11 +20,11 @@ describe('Test user sign up', () => {
             await User.signUp('', '123', 'Pho', '012398219434');
             throw new Error('Wrong');
         } catch (err) {
-            assert.equal(err.name, 'ValidationError');
+            assert.equal(err.code, 'INVALID_SIGN_UP_INFO');
         }
     });
 
-    it.only('Cannot sign up without password', async () => {
+    it('Cannot sign up without password', async () => {
         try {
             await User.signUp('', undefined, 'Pho', '012398219434');
             throw new Error('Wrong');
@@ -39,7 +39,7 @@ describe('Test user sign up', () => {
             await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
             throw new Error('Wrong');
         } catch (error) {
-            assert.equal(error.code, 11000);
+            assert.equal(error.code, 'EMAIL_EXISTED');
         }
     });
 });

@@ -10,3 +10,5 @@ const storySchema = new Schema({
 const StoryModel = mongoose.model('Story', storySchema);
 
 class Story extends StoryModel {}
+
+module.exports = Story;
