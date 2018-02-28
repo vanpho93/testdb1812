@@ -31,6 +31,7 @@ class User extends UserModel {
         delete userInfo.password;
         return userInfo;
     }
+    
     static async signIn(email, password) {
         const user = await User.findOne({ email });
         if (!user) throw new MyError('Cannot find user.', CANNOT_FIND_USER, 404);
