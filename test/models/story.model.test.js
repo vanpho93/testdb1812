@@ -3,7 +3,7 @@ const { compare } = require('bcrypt');
 const User = require('../../src/models/user.model');
 const Story = require('../../src/models/story.model');
 
-describe('Can create story for user', () => {
+describe.only('Can create story for user', () => {
     let _id;
     beforeEach('Create new user for test.', async () => {
         const user = await User.signUp('a@gmail.com', '123', 'teo', '321');
@@ -19,5 +19,30 @@ describe('Can create story for user', () => {
         assert.equal(name, 'teo');
         assert.equal(phone, '321');
         assert.equal(email, 'a@gmail.com');
+    });
+
+    it('Can create new story in stories array', async () => {
+        const story = new Story({ content: 'abcd', author: _id });
+        await story.save();
+        // const user = await User.findById(_id);
+        // user.stories.push(story._id);
+        // await user.save();
+        await User.findByIdAndUpdate(_id, { $addToSet: { stories: story._id } });
+        const newStory = await Story.findById(story._id).populate('author');
+        assert.equal(newStory.content, 'abcd');
+        const { name, phone, email } = newStory.author;
+        assert.equal(name, 'teo');
+        assert.equal(phone, '321');
+        assert.equal(email, 'a@gmail.com');
+        const user = await User.findById(_id).populate('stories');
+        assert.equal(user.stories[0].content, 'abcd');
+    });
+
+    it('Can add new story with static method', async () => {
+
+    });
+
+    it('Cannot add new story with wrong idUser', async () => {
+
     });
 });

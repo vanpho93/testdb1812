@@ -12,7 +12,8 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true, trim: true },
     name: { type: String, required: true },
-    phone: { type: String, required: true }
+    phone: { type: String, required: true },
+    stories: [{ type: Schema.Types.ObjectId, ref: 'Story' }]
 });
 
 const UserModel = mongoose.model('User', userSchema);
