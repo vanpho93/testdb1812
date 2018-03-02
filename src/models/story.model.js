@@ -18,6 +18,13 @@ class Story extends StoryModel {
         if (!user) throw new MyError('Cannot find user.', 'CANNOT_FIND_USER', 404);
         return await story.save();
     }
+
+    static async removeStory(idUser, idStory) {
+        const story = await Story.findOneAndRemove({ _id: idStory, author: idUser })
+        .catch(error => { throw new MyError('Cannot find story.', 'CANNOT_FIND_STORY', 404); });
+        if (!story) throw new MyError('Cannot find story.', 'CANNOT_FIND_STORY', 404);
+        return story;
+    }
 }
 
 module.exports = Story;

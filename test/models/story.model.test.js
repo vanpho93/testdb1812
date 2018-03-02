@@ -3,7 +3,7 @@ const { compare } = require('bcrypt');
 const User = require('../../src/models/user.model');
 const Story = require('../../src/models/story.model');
 
-describe.only('Can create story for user', () => {
+describe('Can create story for user', () => {
     let _id;
     beforeEach('Create new user for test.', async () => {
         const user = await User.signUp('a@gmail.com', '123', 'teo', '321');
