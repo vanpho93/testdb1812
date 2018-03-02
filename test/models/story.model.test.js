@@ -55,7 +55,7 @@ describe('Create story for user', () => {
     });
 });
 
-describe.only('Remove story', () => {
+describe('Remove story', () => {
     let idUser1, idUser2, idStory;
     beforeEach('Create new user for test.', async () => {
         const user1 = await User.signUp('a@gmail.com', '123', 'teo', '321');
@@ -67,14 +67,28 @@ describe.only('Remove story', () => {
     });
 
     it('Can remove story', async () => {
-
+        await Story.removeStory(idUser1, idStory);
+        const storyCount = await Story.count({});
+        assert.equal(storyCount, 0);
+        const user = await User.findById(idUser1);
+        assert.equal(user.stories.length, 0);
     });
 
     it('Cannot remove story with wrong storyID', async () => {
-
+        try {
+            await Story.removeStory(idUser1, 'abcd');
+            throw new Error('Wrong');
+        } catch (err) {
+            assert.equal(err.code, 'CANNOT_FIND_STORY');
+        }
     });
 
     it('Cannot remove story of other', async () => {
-
+        try {
+            await Story.removeStory(idUser2, idStory);
+            throw new Error('Wrong');
+        } catch (err) {
+            assert.equal(err.code, 'CANNOT_FIND_STORY');
+        }
     });
 });
