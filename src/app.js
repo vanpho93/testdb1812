@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('./models/user.model');
+const Story = require('./models/story.model');
 // const parser = require('body-parser').urlencoded({ extended: false });
 const parser = require('body-parser').json();
 const { verify } = require('./lib/jwt');
@@ -32,7 +33,11 @@ function mustBeUser(req, res, next) {
 }
 
 app.post('/story', mustBeUser, parser, (req, res) => {
-
+    Story.createStory(req.idUser, req.body.content)
+    .then(story => res.send({ success: true, story }))
+    .catch(error => {
+        res.send({ success: false, code: error.code, message: error.message });
+    });
 });
 
 app.delete('/story/id', mustBeUser, (req, res) => {
