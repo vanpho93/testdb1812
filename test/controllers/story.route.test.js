@@ -26,4 +26,12 @@ describe.only('Test POST /story', () => {
         const user = await User.findOne().populate('stories');
         assert.equal(user.stories[0].content, 'abcd');
     });
+
+    it('Cannot create new story without token', async () => {
+        const response = await request(app)
+        .post('/story')
+        .send({ content: 'abcd' })
+        assert.equal(response.status, 400);
+        assert.equal(response.body.success, false);
+    });
 });

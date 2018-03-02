@@ -40,8 +40,12 @@ app.post('/story', mustBeUser, parser, (req, res) => {
     });
 });
 
-app.delete('/story/id', mustBeUser, (req, res) => {
-
+app.delete('/story/:id', mustBeUser, (req, res) => {
+    Story.removeStory(req.idUser, req.params.id)
+    .then(story => res.send({ success: true, story }))
+    .catch(error => {
+        res.send({ success: false, code: error.code, message: error.message });
+    });
 });
 
 module.exports = app;
