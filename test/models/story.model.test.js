@@ -3,7 +3,7 @@ const { compare } = require('bcrypt');
 const User = require('../../src/models/user.model');
 const Story = require('../../src/models/story.model');
 
-describe('Can create story for user', () => {
+describe('Create story for user', () => {
     let _id;
     beforeEach('Create new user for test.', async () => {
         const user = await User.signUp('a@gmail.com', '123', 'teo', '321');
@@ -52,5 +52,29 @@ describe('Can create story for user', () => {
         } catch (error) {
             assert.equal(error.code, 'CANNOT_FIND_USER');
         }
+    });
+});
+
+describe.only('Remove story', () => {
+    let idUser1, idUser2, idStory;
+    beforeEach('Create new user for test.', async () => {
+        const user1 = await User.signUp('a@gmail.com', '123', 'teo', '321');
+        const user2 = await User.signUp('b@gmail.com', '123', 'teo', '321');
+        idUser1 = user1._id; 
+        idUser2 = user2._id;
+        const story = await Story.createStory(idUser1, 'abcd');
+        idStory = story._id;
+    });
+
+    it('Can remove story', async () => {
+
+    });
+
+    it('Cannot remove story with wrong storyID', async () => {
+
+    });
+
+    it('Cannot remove story of other', async () => {
+
     });
 });
