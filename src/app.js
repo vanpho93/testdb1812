@@ -44,7 +44,8 @@ app.delete('/story/:id', mustBeUser, (req, res) => {
     Story.removeStory(req.idUser, req.params.id)
     .then(story => res.send({ success: true, story }))
     .catch(error => {
-        res.send({ success: false, code: error.code, message: error.message });
+        res.status(error.statusCode)
+        .send({ success: false, code: error.code, message: error.message });
     });
 });
 
