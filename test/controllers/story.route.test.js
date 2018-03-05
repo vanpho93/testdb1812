@@ -95,7 +95,7 @@ describe('Test DELETE /story', () => {
     });
 });
 
-describe.only('Test PUT /story', () => {
+describe('Test PUT /story', () => {
     let idUser1, idUser2, idStory, token1, token2;
     beforeEach('Create story for test', async () => {
         await User.signUp('a@gmail.com', '123', 'teo', '321');
@@ -115,6 +115,7 @@ describe.only('Test PUT /story', () => {
         .put(`/story/${idStory}`)
         .send({ content: 'dcba' })
         .set({ token: token1 });
+        console.log(response.text);
         assert.equal(response.status, 200);
         assert.equal(response.body.story.content, 'dcba');
         const story = await Story.findOne({});
@@ -146,8 +147,7 @@ describe.only('Test PUT /story', () => {
     it('Cannot update story without token', async () => {
         const response = await request(app)
         .put(`/story/${idStory}a`)
-        .send({ content: 'dcba' })
-        .set({ token: token1+'x' });
+        .send({ content: 'dcba' });
         assert.equal(response.status, 400);
         assert.equal(response.body.message, 'Invalid token.');
         const story = await Story.findOne({});
