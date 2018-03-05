@@ -115,7 +115,6 @@ describe('Test PUT /story', () => {
         .put(`/story/${idStory}`)
         .send({ content: 'dcba' })
         .set({ token: token1 });
-        console.log(response.text);
         assert.equal(response.status, 200);
         assert.equal(response.body.story.content, 'dcba');
         const story = await Story.findOne({});
