@@ -49,8 +49,8 @@ app.delete('/story/:id', mustBeUser, (req, res) => {
     });
 });
 
-app.put('/story/:id', mustBeUser, (req, res) => {
-    Story.updateStory(req.idUser, req.params.id, content)
+app.put('/story/:id', mustBeUser, parser, (req, res) => {
+    Story.updateStory(req.idUser, req.params.id, req.body.content)
     .then(story => res.send({ success: true, story }))
     .catch(error => {
         res.status(error.statusCode)

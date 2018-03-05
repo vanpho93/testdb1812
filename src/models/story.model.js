@@ -28,7 +28,7 @@ class Story extends StoryModel {
     }
 
     static async updateStory(idUser, idStory, content) {
-        const story = await Story.findOneAndUpdate({ _id: idStory, author: idUser }, { content })
+        const story = await Story.findOneAndUpdate({ _id: idStory, author: idUser }, { content }, { new: true })
         .catch(error => { throw new MyError('Cannot find story.', 'CANNOT_FIND_STORY', 404); });
         if (!story) throw new MyError('Cannot find story.', 'CANNOT_FIND_STORY', 404);
         return story;
