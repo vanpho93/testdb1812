@@ -5,7 +5,7 @@ const app = require('../../src/app');
 const User = require('../../src/models/user.model');
 const Story = require('../../src/models/story.model');
 
-describe.only('Test POST /story', () => {
+describe('Test POST /story', () => {
     let token;
     beforeEach('Create user for test', async () => {
         await User.signUp('pho100@gmail.com', '123', 'Pho', '012398219434');
@@ -33,5 +33,28 @@ describe.only('Test POST /story', () => {
         .send({ content: 'abcd' })
         assert.equal(response.status, 400);
         assert.equal(response.body.success, false);
+    });
+});
+
+
+describe('Test DELETE /story', () => {
+    beforeEach('Create story for test', async () => {
+
+    });
+
+    it('Can remove story by DELETE', async () => {
+
+    });
+
+    it('Cannot remove story with wrong storyId', async () => {
+
+    });
+
+    it('Cannot remove story with wrong token', async () => {
+        
+    });
+
+    it('Cannot remove story without token', async () => {
+        
     });
 });
