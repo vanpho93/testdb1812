@@ -36,7 +36,6 @@ describe('Test POST /story', () => {
     });
 });
 
-
 describe('Test DELETE /story', () => {
     let idUser1, idUser2, idStory, token1, token2;
     beforeEach('Create story for test', async () => {
@@ -93,5 +92,36 @@ describe('Test DELETE /story', () => {
         .set({ token: token2 });
         assert.equal(response.body.success, false);
         assert.equal(response.body.code, 'CANNOT_FIND_STORY');
+    });
+});
+
+describe('Test PUT /story', () => {
+    let idUser1, idUser2, idStory, token1, token2;
+    beforeEach('Create story for test', async () => {
+        await User.signUp('a@gmail.com', '123', 'teo', '321');
+        await User.signUp('b@gmail.com', '123', 'teo', '321');
+        const user1 = await User.signIn('a@gmail.com', '123');
+        const user2 = await User.signIn('b@gmail.com', '123');
+        token1 = user1.token;
+        token2 = user2.token;
+        idUser1 = user1._id; 
+        idUser2 = user2._id;
+        const story = await Story.createStory(idUser1, 'abcd');
+        idStory = story._id;
+    });
+
+    it('Can update story by PUT', async () => {
+    });
+
+    it('Cannot update story with wrong storyId', async () => {
+    });
+
+    it('Cannot update story with wrong token', async () => {
+    });
+
+    it('Cannot update story without token', async () => {
+    });
+
+    it('Cannot update story with other\'s token', async () => {
     });
 });

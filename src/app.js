@@ -49,4 +49,13 @@ app.delete('/story/:id', mustBeUser, (req, res) => {
     });
 });
 
+app.put('/story/:id', mustBeUser, (req, res) => {
+    Story.updateStory(req.idUser, req.params.id, content)
+    .then(story => res.send({ success: true, story }))
+    .catch(error => {
+        res.status(error.statusCode)
+        .send({ success: false, code: error.code, message: error.message });
+    });
+});
+
 module.exports = app;
